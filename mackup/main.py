@@ -37,6 +37,7 @@ See https://github.com/lra/mackup/tree/master/doc for more information.
 
 """
 from docopt import docopt
+from tabulate import tabulate
 from .appsdb import ApplicationsDatabase
 from .application import ApplicationProfile
 from .constants import MACKUP_APP_NAME, VERSION
