@@ -5,7 +5,7 @@ Copyright (C) 2013-2015 Laurent Raufaste <http://glop.org/>
 
 Usage:
   mackup list
-  mackup status
+  mackup [options] status
   mackup [options] backup
   mackup [options] restore
   mackup [options] uninstall
@@ -176,6 +176,24 @@ def main():
         output += ("{} applications supported in Mackup v{}"
                    .format(len(app_db.get_app_names()), VERSION))
         print(output)
+
+    elif args['status']:
+        # Display current status.
+        status_table = []
+        headers = ["Application", "Status"]
+
+        # Get status of each application.
+        for app_name in sorted(mckp.get_apps_to_backup()):
+            app = ApplicationProfile(mckp,
+                                     app_db.get_files(app_name),
+                                     dry_run,
+                                     verbose)
+            # @todo Get pretty app name for display.
+            status = app.status()
+            if (status):
+                status_table.append([app_name, status])
+
+        print tabulate(status_table, headers, tablefmt="fancy_grid")
 
     # Delete the tmp folder
     mckp.clean_temp_folder()
